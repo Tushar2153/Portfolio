@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tushar Verma - AI & Software Developer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        // Check for saved theme in localStorage or user's system preference
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+
+    <script>
+        tailwind.config = {
+            // ** NEW: Added darkMode: 'class' **
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        // Light theme colors (Cream & Blue)
+                        primary: tailwind.colors.sky, 
+                        secondary: tailwind.colors.blue,
+                        gray: tailwind.colors.stone, // Stone for "cream" feel
+                        
+                        // ** NEW: Dark theme colors (Indigo & Slate) **
+                        // These will be used with the `dark:` prefix
+                        'dark-primary': tailwind.colors.indigo,
+                        'dark-secondary': tailwind.colors.purple,
+                        'dark-gray': tailwind.colors.slate,
+                    }
+                },
+            },
+        };
+    </script>
+    <style>
+        /* --- Light Mode Scrollbar --- */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f5f5f4; /* stone-100 */
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #0ea5e9; /* sky-500 */
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #0284c7; /* sky-600 */
+        }
+
+        /* --- ** NEW: Dark Mode Scrollbar ** --- */
+        .dark ::-webkit-scrollbar-track {
+            background: #0f172a; /* slate-900 */
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #6366f1; /* indigo-500 */
+        }
+        .dark ::-webkit-scrollbar-thumb:hover {
+            background: #4f46e5; /* indigo-600 */
+        }
+
+        /* --- Reusable Component Styles --- */
+        
+        /* Light "frosted glass" card */
+        .glass-card {
+            @apply bg-white/60 backdrop-blur-lg border border-gray-200/50 rounded-xl shadow-lg
+                    dark:bg-dark-gray-800/60 dark:border-dark-gray-700/50;
+        }
+        /* Light gradient text */
+        .gradient-text {
+            @apply bg-gradient-to-r from-primary-500 to-secondary-500 bg-clip-text text-transparent
+                    dark:from-dark-primary-500 dark:to-dark-secondary-500;
+        }
+        /* Light theme glass pill */
+        .glass-pill {
+            @apply bg-gradient-to-r from-primary-500/10 to-secondary-500/10 text-primary-700 font-medium px-4 py-2 rounded-full text-sm border border-primary-500/30
+                    dark:from-dark-primary-500/10 dark:to-dark-secondary-500/10 dark:text-dark-primary-300 dark:border-dark-primary-500/30;
+        }
+        /* Light theme tech pill */
+        .tech-pill {
+            @apply bg-gradient-to-r from-primary-500/10 to-secondary-500/10 text-primary-800 font-medium text-xs px-3 py-1 rounded-full border border-primary-500/30
+                    dark:from-dark-primary-500/10 dark:to-dark-secondary-500/10 dark:text-dark-primary-300 dark:border-dark-primary-500/30;
+        }
+        .project-card {
+            @apply glass-card overflow-hidden transform transition-all duration-300 ease-in-out;
+        }
+        /* Light hover shadow and border */
+        .project-card:hover {
+            @apply shadow-[0_0_25px_theme(colors.primary.500.30),_0_0_10px_theme(colors.secondary.500.20)] scale-[1.03] border-gray-300/50
+                    dark:shadow-[0_0_25px_theme(colors.dark-primary.500.30),_0_0_10px_theme(colors.dark-secondary.500.20)] dark:border-dark-gray-600/50;
+        }
+        /* Light project link button */
+        .project-link {
+            @apply inline-flex items-center font-semibold text-white bg-primary-600 hover:bg-primary-700 transition-all duration-200 px-5 py-2 rounded-lg shadow transform hover:scale-105
+                    dark:bg-dark-primary-600 dark:hover:bg-dark-primary-700;
+        }
+        /* Light theme active nav link */
+        .nav-link.active {
+            @apply text-primary-600 font-semibold bg-gray-200
+                    dark:text-dark-primary-400 dark:bg-dark-gray-800;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-700 dark:bg-dark-gray-900 dark:text-dark-gray-300 font-sans antialiased">
+
+    <header class="md:hidden sticky top-0 z-50 w-full bg-gray-100/80 backdrop-blur-sm border-b border-gray-200 dark:bg-dark-gray-900/80 dark:border-dark-gray-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <a href="#" class="text-2xl font-bold text-gray-900 dark:text-white">
+                    Tushar Verma
+                </a>
+                
+                <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-500 hover:text-primary-600 hover:bg-gray-200 dark:text-dark-gray-400 dark:hover:text-dark-primary-400 dark:hover:bg-dark-gray-800 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500" aria-expanded="false">
+                    <span class="sr-only">Open main menu</span>
+                    <svg id="menu-icon-closed" class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                    <svg id="menu-icon-open" class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+        
+        <div id="mobile-menu" class="md:hidden hidden border-t border-gray-200 dark:border-dark-gray-700">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#about" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-gray-200 dark:text-dark-gray-300 dark:hover:text-dark-primary-400 dark:hover:bg-dark-gray-800" data-section="about">About</a>
+                <a href="#skills" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-gray-200 dark:text-dark-gray-300 dark:hover:text-dark-primary-400 dark:hover:bg-dark-gray-800" data-section="skills">Skills</a>
+                <a href="#projects" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-gray-200 dark:text-dark-gray-300 dark:hover:text-dark-primary-400 dark:hover:bg-dark-gray-800" data-section="projects">Projects</a>
+                <a href="#contact" class="nav-link block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-gray-200 dark:text-dark-gray-300 dark:hover:text-dark-primary-400 dark:hover:bg-dark-gray-800" data-section="contact">Contact</a>
+                
+                <button class="theme-toggle-button w-full flex items-center px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-gray-200 dark:text-dark-gray-300 dark:hover:text-dark-primary-400 dark:hover:bg-dark-gray-800">
+                    <svg class="theme-icon-moon mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" /></svg>
+                    <svg class="theme-icon-sun mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-6.364-.386l1.591-1.591M3 12H.75m.386-6.364l1.591 1.591M12 9a3 3 0 100 6 3 3 0 000-6z" /></svg>
+                    <span>Toggle Theme</span>
+                </button>
+
+                <a href="Tushar Verma.pdf" download="TusharVerma-Resume.pdf" class="block px-3 py-3 rounded-md text-base font-medium text-center text-white bg-primary-600 hover:bg-primary-700 dark:bg-dark-primary-600 dark:hover:bg-dark-primary-700">Download Resume</a>
+            </div>
+        </div>
+    </header>
+
+    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 md:gap-x-8 lg:gap-x-12 px-4 sm:px-6 lg:px-8">
+        
+        <aside class="md:col-span-5 lg:col-span-4 md:sticky md:top-0 md:h-screen md:py-16 md:flex md:flex-col">
+            <div class="flex-grow flex flex-col">
+                
+                <div class="hidden md:flex justify-start mb-6">
+                    <img class="w-32 h-32 rounded-full object-cover border-8 border-white dark:border-dark-gray-800 shadow-xl shadow-primary-500/10 dark:shadow-dark-primary-500/10" 
+                         src="profile pic.jpg" 
+                         alt="A photo of Tushar Verma">
+                </div>
+
+                <a href="#" class="hidden md:block text-3xl font-bold text-gray-900 dark:text-white">
+                    Tushar Verma
+                </a>
+                
+                <h2 class="hidden md:block text-xl font-medium text-primary-600 dark:text-dark-primary-400 mt-2">
+                    AI & Software Developer
+                </h2>
+                
+                <p class="hidden md:block text-gray-600 dark:text-dark-gray-400 mt-4 max-w-xs">
+                    Aspiring AI & ML Engineer specializing in data analysis, computer vision, and building intelligent applications.
+                </p>
+
+                <nav class="hidden md:block mt-12">
+                    <ul class="space-y-2">
+                        <li><a href="#about" class="nav-link group flex items-center px-3 py-2 rounded-md text-gray-700 hover:text-primary-600 hover:bg-gray-200 dark:text-dark-gray-300 dark:hover:text-dark-primary-400 dark:hover:bg-dark-gray-800" data-section="about">About</a></li>
+                        <li><a href="#skills" class="nav-link group flex items-center px-3 py-2 rounded-md text-gray-700 hover:text-primary-600 hover:bg-gray-200 dark:text-dark-gray-300 dark:hover:text-dark-primary-400 dark:hover:bg-dark-gray-800" data-section="skills">Skills</a></li>
+                        <li><a href="#projects" class="nav-link group flex items-center px-3 py-2 rounded-md text-gray-700 hover:text-primary-600 hover:bg-gray-200 dark:text-dark-gray-300 dark:hover:text-dark-primary-400 dark:hover:bg-dark-gray-800" data-section="projects">Projects</a></li>
+                        <li><a href="#contact" class="nav-link group flex items-center px-3 py-2 rounded-md text-gray-700 hover:text-primary-600 hover:bg-gray-200 dark:text-dark-gray-300 dark:hover:text-dark-primary-400 dark:hover:bg-dark-gray-800" data-section="contact">Contact</a></li>
+                    </ul>
+                </nav>
+
+                <div class="hidden md:block mt-8">
+                    <button class="theme-toggle-button w-full flex items-center px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-primary-600 hover:bg-gray-200 dark:text-dark-gray-300 dark:hover:text-dark-primary-400 dark:hover:bg-dark-gray-800">
+                        <svg class="theme-icon-moon mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
+                        </svg>
+                        <svg class="theme-icon-sun mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-6.364-.386l1.591-1.591M3 12H.75m.386-6.364l1.591 1.591M12 9a3 3 0 100 6 3 3 0 000-6z" />
+                        </svg>
+                        <span>Toggle Theme</span>
+                    </button>
+                </div>
+
+            </div>
+
+            <div class="mt-12 md:mt-auto md:pt-12">
+                <div class="flex space-x-6 mb-6">
+                    <a href="https://github.com/Tushar2153" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-primary-500 dark:text-dark-gray-400 dark:hover:text-dark-primary-400 transition-colors duration-200">
+                        <span class="sr-only">GitHub</span>
+                        <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.165 6.839 9.49.5.092.682-.217.682-.483 0-.237-.009-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.03-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026.798-.222 1.649-.333 2.5-.333.851 0 1.702.111 2.5.333 1.91-1.296 2.747-1.026 2.747-1.026.546 1.378.201 2.397.1 2.65.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.94.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.745 0 .268.18.58.688.482A10.003 10.003 0 0022 12C22 6.477 17.523 2 12 2z" clip-rule="evenodd" />
+                        </svg>
+                    </a>
+                    <a href="http://www.linkedin.com/in/tushar-verma2" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-primary-500 dark:text-dark-gray-400 dark:hover:text-dark-primary-400 transition-colors duration-200">
+                        <span class="sr-only">LinkedIn</span>
+                        <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M19 3a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h14zm-.5 15.5v-5.3c0-2.3-1.0-3.6-2.8-3.6-1.3 0-2.1.7-2.4 1.4H13V9.5h-2.5v9h2.5v-4.5c0-.8.2-1.6 1.2-1.6s1.3.8 1.3 1.6v4.5H18.5zM6.5 9.5H9v9H6.5v-9zM7.8 5.5a1.2 1.2 0 100 2.4 1.2 1.2 0 000-2.4z" clip-rule="evenodd" />
+                        </svg>
+                    </a>
+                </div>
+                <a href="Tushar Verma.pdf" download="TusharVerma-Resume.pdf" class="hidden md:inline-flex items-center justify-center w-full px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 dark:bg-dark-primary-600 dark:hover:bg-dark-primary-700 transition-colors duration-200 shadow-lg">
+                    Download Resume
+                    <svg class="ml-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                    </svg>
+                </a>
+            </div>
+        </aside>
+        
+        <main class="md:col-span-7 lg:col-span-8 md:py-16">
+            
+            <section id="home" class="py-16 md:py-0 md:pt-0">
+                <div class="flex justify-center md:hidden">
+                    <img class="w-48 h-48 rounded-full object-cover border-8 border-white dark:border-dark-gray-800 shadow-xl shadow-primary-500/10 dark:shadow-dark-primary-500/10" 
+                         src="profile pic.jpg" 
+                         alt="A photo of Tushar Verma">
+                </div>
+            </section>
+
+            <section id="about" class="py-20 md:py-32">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-16">
+                    <span class="gradient-text">About Me</span>
+                </h2>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                    
+                    <div class="space-y-12">
+                        <h3 class="text-2xl font-semibold text-gray-900 dark:text-white">Work Experience</h3>
+                        
+                        <div class="relative pl-8">
+                            <div class="absolute left-0 top-1 w-px h-full bg-gray-300 dark:bg-dark-gray-700"></div>
+                            <div class="absolute left-[-5px] top-1 w-3 h-3 rounded-full bg-primary-500 dark:bg-dark-primary-500"></div>
+                            <h4 class="text-lg font-semibold text-gray-900 dark:text-white">Machine Learning Intern</h4>
+                            <p class="text-primary-600 dark:text-dark-primary-400 font-medium">Codealpha</p>
+                            <p class="text-sm text-gray-500 dark:text-dark-gray-500 mb-2">(3-month internship)</p>
+                            <ul class="list-disc list-outside text-gray-600 dark:text-dark-gray-400 space-y-1 pl-4">
+                                <li>Built and evaluated ML models using scikit-learn (Linear Regression, Decision Trees, K-Means).</li>
+                                <li>Applied supervised and unsupervised learning techniques to real-world datasets.</li>
+                            </ul>
+                        </div>
+
+                        <div class="relative pl-8">
+                            <div class="absolute left-0 top-1 w-px h-full bg-gray-300 dark:bg-dark-gray-700"></div>
+                            <div class="absolute left-[-5px] top-1 w-3 h-3 rounded-full bg-primary-500 dark:bg-dark-primary-500"></div>
+                            <h4 class="text-lg font-semibold text-gray-900 dark:text-white">Data Analyst Intern</h4>
+                            <p class="text-primary-600 dark:text-dark-primary-400 font-medium">Cognifyz Technologies</p>
+                            <p class="text-sm text-gray-500 dark:text-dark-gray-500 mb-2">(1-month internship)</p>
+                            <ul class="list-disc list-outside text-gray-600 dark:text-dark-gray-400 space-y-1 pl-4">
+                                <li>Worked on data analysis tasks, including data cleaning, visualization, and reporting.</li>
+                                <li>Gained hands-on experience with Python for data processing.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="space-y-12">
+                        <h3 class="text-2xl font-semibold text-gray-900 dark:text-white">Education</h3>
+                        
+                        <div class="relative pl-8">
+                            <div class="absolute left-0 top-1 w-px h-full bg-gray-300 dark:bg-dark-gray-700"></div>
+                            <div class="absolute left-[-5px] top-1 w-3 h-3 rounded-full bg-primary-500 dark:bg-dark-primary-500"></div>
+                            <h4 class="text-lg font-semibold text-gray-900 dark:text-white">Bachelor's in Computer Science & Engineering</h4>
+                            <p class="text-primary-600 dark:text-dark-primary-400 font-medium">IMS Engineering College (AKTU University)</p>
+                            <p class="text-sm text-gray-500 dark:text-dark-gray-500 mb-2">(2022 - 2026)</p>
+                            <ul class="list-disc list-outside text-gray-600 dark:text-dark-gray-400 space-y-1 pl-4">
+                                <li>Specialization in Artificial Intelligence & Machine Learning.</li>
+                                <li>Relevant Coursework: Data Structures, DBMS, Machine Learning, AI.</li>
+                            </ul>
+                        </div>
+
+                        <div class="relative pl-8">
+                            <div class="absolute left-0 top-1 w-px h-full bg-gray-300 dark:bg-dark-gray-700"></div>
+                            <div class="absolute left-[-5px] top-1 w-3 h-3 rounded-full bg-primary-500 dark:bg-dark-primary-500"></div>
+                            <h4 class="text-lg font-semibold text-gray-900 dark:text-white">Class 12 (ICSE Board)</h4>
+                            <p class="text-primary-600 dark:text-dark-primary-400 font-medium">Ingraham Institute of English School</p>
+                            <p class="text-sm text-gray-500 dark:text-dark-gray-500 mb-2">Passed in 2021</p>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <section id="skills" class="py-20 md:py-32">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-12">
+                <span class="gradient-text">Technical Skills</span>
+            </h2>
+            <div class="glass-card p-6 md:p-8">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-10 gap-y-12">
+                    
+                    <div>
+                        <h3 class="flex items-center gap-3 text-xl font-semibold text-gray-900 dark:text-white mb-4">
+                            <svg class="h-6 w-6 text-primary-600 dark:text-dark-primary-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" />
+                            </svg>
+                            <span>Programming Languages</span>
+                        </h3>
+                        <div class="flex flex-wrap gap-3">
+                            <span class="glass-pill">Python</span>
+                            <span class="glass-pill">C</span>
+                            <span class="glass-pill">Java</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="flex items-center gap-3 text-xl font-semibold text-gray-900 dark:text-white mb-4">
+                            <svg class="h-6 w-6 text-primary-600 dark:text-dark-primary-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375" />
+                            </svg>
+                            <span>Databases</span>
+                        </h3>
+                        <div class="flex flex-wrap gap-3">
+                            <span class="glass-pill">SQL</span>
+                            <span class="glass-pill">MongoDB</span>
+                        </div>
+                    </div>
+                    
+                    <div class="lg:col-span-2">
+                        <h3 class="flex items-center gap-3 text-xl font-semibold text-gray-900 dark:text-white mb-4">
+                            <svg class="h-6 w-6 text-primary-600 dark:text-dark-primary-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.125 1.125 0 010 2.25H5.625a1.125 1.125 0 010-2.25z" />
+                            </svg>
+                            <span>Libraries, Frameworks & Tools</span>
+                        </h3>
+                        <div class="flex flex-wrap gap-3">
+                            <span class="glass-pill">Pandas</span>
+                            <span class="glass-pill">NumPy</span>
+                            <span class="glass-pill">Scikit-learn</span>
+                            <span class="glass-pill">Matplotlib</span>
+                            <span class="glass-pill">NLTK</span>
+                            <span class="glass-pill">Streamlit</span>
+                            <span class="glass-pill">OpenCV</span>
+                            <span class="glass-pill">MediaPipe</span>
+                            <span class="glass-pill">Spotipy</span>
+                            <span class="glass-pill">pyttsx3</span>
+                            <span class="glass-pill">Jupyter</span>
+                            <span class="glass-pill">Git</span>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="flex items-center gap-3 text-xl font-semibold text-gray-900 dark:text-white mb-4">
+                            <svg class="h-6 w-6 text-primary-600 dark:text-dark-primary-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M8.25 19.5v1.5M15.75 3v1.5M19.5 8.25h1.5M19.5 12h1.5m-1.5 3.75h1.5M15.75 19.5v1.5M12 4.5v15" />
+                            </svg>
+                            <span>Machine Learning</span>
+                        </h3>
+                        <div class="flex flex-wrap gap-3">
+                            <span class="glass-pill">Regression</span>
+                            <span class="glass-pill">Classification</span>
+                            <span class="glass-pill">Decision Trees</span>
+                            <span class="glass-pill">Clustering (K-Means)</span>
+                            <span class="glass-pill">Statistics</span>
+                            <span class="glass-pill">Time-Series Methods</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="flex items-center gap-3 text-xl font-semibold text-gray-900 dark:text-white mb-4">
+                            <svg class="h-6 w-6 text-primary-600 dark:text-dark-primary-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            <span>Deep Learning & NLP</span>
+                        </h3>
+                        <div class="flex flex-wrap gap-3">
+                            <span class="glass-pill">Deep Learning Concepts</span>
+                            <span class="glass-pill">NLP</span>
+                            <span class="glass-pill">TF-IDF</span>
+                            <span class="glass-pill">Bag-of-Words (BoW)</span>
+                            <span class="glass-pill">Cosine Similarity</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="flex items-center gap-3 text-xl font-semibold text-gray-900 dark:text-white mb-4">
+                            <svg class="h-6 w-6 text-primary-600 dark:text-dark-primary-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h15.75c.621 0 1.125.504 1.125 1.125v6.75C21 20.496 20.496 21 19.875 21H4.125C3.504 21 3 20.496 3 19.875v-6.75zM9.75 8.625c0-1.036.84-1.875 1.875-1.875h.75c1.036 0 1.875.84 1.875 1.875v.375c0 1.036-.84 1.875-1.875 1.875h-.75c-1.036 0-1.875-.84-1.875-1.875v-.375z" />
+                            </svg>
+                            <span>Data Analysis & Visualization</span>
+                        </h3>
+                        <div class="flex flex-wrap gap-3">
+                            <span class="glass-pill">Power BI</span>
+                            <span class="glass-pill">MS Excel</span>
+                            <span class="glass-pill">Exploratory Data Analysis (EDA)</span>
+                            <span class="glass-pill">Feature Engineering</span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="flex items-center gap-3 text-xl font-semibold text-gray-900 dark:text-white mb-4">
+                            <svg class="h-6 w-6 text-primary-600 dark:text-dark-primary-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h3.75" />
+                            </svg>
+                            <span>Fundamentals & Problem Solving</span>
+                        </h3>
+                        <div class="flex flex-wrap gap-3">
+                            <span class="glass-pill">Data Structures</span>
+                            <span class="glass-pill">Algorithms</span>
+                            <span class="glass-pill">Problem Solving</span>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-2">
+                        <h3 class="flex items-center gap-3 text-xl font-semibold text-gray-900 dark:text-white mb-4">
+                            <svg class="h-6 w-6 text-primary-600 dark:text-dark-primary-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.56c.995-.362 1.903-.795 1.903-1.415v-2.13a2.25 2.25 0 00-1.183-1.981l-6.36-3.18a2.25 2.25 0 00-2.36 0L4.183 9.615a2.25 2.25 0 00-1.183 1.981v2.13c0 .62.908 1.053 1.903 1.415a9.093 9.093 0 003.741.56s.845.097 1.257.315a.75.75 0 00.578.075l.126-.06a.75.75 0 01.578.075s.412.218 1.257.315zM12 6a.75.75 0 100-1.5.75.75 0 000 1.5z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 12a.75.75 0 100-1.5.75.75 0 000 1.5zM12 18a.75.75 0 100-1.5.75.75 0 000 1.5z" />
+                            </svg>
+                            <span>Professional Skills</span>
+                        </h3>
+                        <div class="flex flex-wrap gap-3">
+                            <span class="glass-pill">Good Communication</span>
+                            <span class="glass-pill">Leadership Skills</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </section>
+            
+            <section id="projects" class="py-20 md:py-32">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-12">
+                    <span class="gradient-text">My Projects</span>
+                </h2>
+
+                <div class="grid grid-cols-1 gap-8">
+                    
+                    <div class="project-card">
+                        <img src="https://placehold.co/600x400/0ea5e9/f0f9ff?text=AI+Voice+Assistant" alt="AI Voice Assistant Project" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">FRIDAY: A Virtual Assistant</h3>
+                            <p class="text-gray-600 dark:text-dark-gray-400 mb-4">
+                                Developed a desktop-native voice assistant, featuring face authentication for security. The assistant handles real-world tasks like PDF reading, unit conversion, and application control.
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-6">
+                                <span class="tech-pill">Python</span>
+                                <span class="tech-pill">SpeechRecognition</span>
+                                <span class="tech-pill">pyttsx3</span>
+                                <span class="tech-pill">PyMuPDF</span>
+                                <span class="tech-pill">pyQt</span>
+                            </div>
+                            <a href="https://github.com/Tushar2153/FRIDAY-voice-assistant" class="project-link" target="_blank" rel="noopener noreferrer">
+                                Visit GitHub
+                                <svg class="ml-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="project-card">
+                        <img src="https://placehold.co/600x400/0284c7/f0f9ff?text=Data+Dashboard" alt="Insurance Data Insights Dashboard Screenshot" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Insurance Data Insights Dashboard</h3>
+                            <p class="text-gray-600 dark:text-dark-gray-400 mb-4">
+                                Built an interactive Power BI dashboard to analyze insurance KPIs. The dashboard visualizes claim trends, premium collections, and customer sentiment to support data-driven decisions.
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-6">
+                                <span class="tech-pill">Power BI</span>
+                                <span class="tech-pill">DAX</span>
+                                <span class="tech-pill">Text Analytics</span>
+                                <span class="tech-pill">Data Viz</span>
+                            </div>
+                            <a href="https://github.com/Tushar2153/Insurance-Performance-Dashboard" class="project-link" target="_blank" rel="noopener noreferrer">
+                                Visit GitHub
+                                <svg class="ml-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <img src="https://placehold.co/600x400/0ea5e9/f0f9ff?text=Sales+Analytics" alt="ElectroHub Sales Dashboard Screenshot" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">ElectroHub Sales Dashboard</h3>
+                            <p class="text-gray-600 dark:text-dark-gray-400 mb-4">
+                                Designed a dynamic Power BI dashboard for sales analytics. It tracks profit, discounts, and performance across diverse product categories to identify key business trends.
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-6">
+                                <span class="tech-pill">Power BI</span>
+                                <span class="tech-pill">DAX</span>
+                                <span class="tech-pill">Data Modeling</span>
+                                <span class="tech-pill">Data Viz</span>
+                            </div>
+                            <a href="https://github.com/Tushar2153/Store-Performance-Dashboard-Power-BI-" class="project-link" target="_blank" rel="noopener noreferrer">
+                                Visit GitHub
+                                <svg class="ml-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <img src="https://placehold.co/600x400/0284c7/f0f9ff?text=Computer+Vision" alt="Sign Language Recognition Project Screenshot" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Sign Language Recognition</h3>
+                            <p class="text-gray-600 dark:text-dark-gray-400 mb-4">
+                                Created a real-time sign language recognition system using computer vision. This tool translates hand gestures into text, leveraging OpenCV and MediaPipe to improve accessibility.
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-6">
+                                <span class="tech-pill">Python</span>
+                                <span class="tech-pill">OpenCV</span>
+                                <span class="tech-pill">MediaPipe</span>
+                                <span class="tech-pill">Machine Learning</span>
+                            </div>
+                            <a href="https://github.com/Tushar2153/American-Sign-Language-Recognition-model" class="project-link" target="_blank" rel="noopener noreferrer">
+                                Visit GitHub
+                                <svg class="ml-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <img src="https://placehold.co/600x400/0ea5e9/f0f9ff?text=NLP+Text+Analysis" alt="Twitter Hate Speech Detection Project Screenshot" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Twitter Hate Speech Detection</h3>
+                            <p class="text-gray-600 dark:text-dark-gray-400 mb-4">
+                                Trained and evaluated an NLP model to detect and classify hate speech on Twitter. The model uses scikit-learn and a Bag-of-Words pipeline to identify racist or sexist content.
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-6">
+                                <span class="tech-pill">Python</span>
+                                <span class="tech-pill">scikit-learn</span>
+                                <span class="tech-pill">NLTK</span>
+                                <span class="tech-pill">Pandas</span>
+                                <span class="tech-pill">NLP</span>
+                            </div>
+                            <a href="https://github.com/Tushar2153/Twitter-sentiment-analysis-" class="project-link" target="_blank" rel="noopener noreferrer">
+                                Visit GitHub
+                                <svg class="ml-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="project-card">
+                        <img src="https://placehold.co/600x400/0284c7/f0f9ff?text=Music+Recommender" alt="Music Recommender System Project Screenshot" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">🎵 Music Recommender System</h3>
+                            <p class="text-gray-600 dark:text-dark-gray-400 mb-4">
+                                A content-based music recommender system deployed as a Streamlit web app. It suggests songs based on lyrical similarity (TF-IDF & Cosine Similarity) and fetches album art via the Spotify API.
+                            </D>
+                            <div class="flex flex-wrap gap-2 mb-6">
+                                <span class="tech-pill">Python</span>
+                                <span class="tech-pill">Streamlit</span>
+                                <span class="tech-pill">scikit-learn</span>
+                                <span class="tech-pill">NLTK</span>
+                                <span class="tech-pill">Spotipy</span>
+                                <span class="tech-pill">Pandas</span>
+                            </div>
+                            <a href="https://github.com/Tushar2153/Music-Recommendation-System" class="project-link" target="_blank" rel="noopener noreferrer">
+                                Visit GitHub
+                                <svg class="ml-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"/></svg>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+        
+            <section id="contact" class="py-20 md:py-32">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-12">
+                    <span class="gradient-text">Get in Touch</span>
+                </h2>
+                
+                <p class="text-lg text-gray-600 dark:text-dark-gray-400 mb-8 max-w-2xl">
+                    I'm currently seeking internship opportunities and am open to discussing new projects and collaborations. Feel free to reach out via email or connect with me on social media.
+                </p>
+
+                <div class="glass-card p-6 md:p-8">
+                    <div class="space-y-6">
+                        
+                        <a href="mailto:tusharverma9810@gmail.com" class="flex items-center p-4 rounded-lg bg-gray-100/50 hover:bg-gray-200/50 dark:bg-dark-gray-800/50 dark:hover:bg-dark-gray-700/50 transition-colors duration-200">
+                            <svg class="h-6 w-6 text-primary-600 dark:text-dark-primary-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+                            </svg>
+                            <span class="ml-4 text-base font-medium text-gray-800 dark:text-dark-gray-100">tusharverma9810@gmail.com</span>
+                        </a>
+
+                        <a href="http://www.linkedin.com/in/tushar-verma2" target="_blank" rel="noopener noreferrer" class="flex items-center p-4 rounded-lg bg-gray-100/50 hover:bg-gray-200/50 dark:bg-dark-gray-800/50 dark:hover:bg-dark-gray-700/50 transition-colors duration-200">
+                            <svg class="h-6 w-6 text-primary-600 dark:text-dark-primary-400" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M19 3a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h14zm-.5 15.5v-5.3c0-2.3-1.0-3.6-2.8-3.6-1.3 0-2.1.7-2.4 1.4H13V9.5h-2.5v9h2.5v-4.5c0-.8.2-1.6 1.2-1.6s1.3.8 1.3 1.6v4.5H18.5zM6.5 9.5H9v9H6.5v-9zM7.8 5.5a1.2 1.2 0 100 2.4 1.2 1.2 0 000-2.4z" clip-rule="evenodd" />
+                            </svg>
+                            <span class="ml-4 text-base font-medium text-gray-800 dark:text-dark-gray-100">linkedin.com/in/tushar-verma2</span>
+                        </a>
+
+                        <a href="https://github.com/Tushar2153" target="_blank" rel="noopener noreferrer" class="flex items-center p-4 rounded-lg bg-gray-100/50 hover:bg-gray-200/50 dark:bg-dark-gray-800/50 dark:hover:bg-dark-gray-700/50 transition-colors duration-200">
+                            <svg class="h-6 w-6 text-primary-600 dark:text-dark-primary-400" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.165 6.839 9.49.5.092.682-.217.682-.483 0-.237-.009-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.03-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026.798-.222 1.649-.333 2.5-.333.851 0 1.702.111 2.5.333 1.91-1.296 2.747-1.026 2.747-1.026.546 1.378.201 2.397.1 2.65.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.94.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.745 0 .268.18.58.688.482A10.003 10.003 0 0022 12C22 6.477 17.523 2 12 2z" clip-rule="evenodd" />
+                            </svg>
+                            <span class="ml-4 text-base font-medium text-gray-800 dark:text-dark-gray-100">github.com/Tushar2153</span>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <footer class="border-t border-gray-200 dark:border-dark-gray-700 mt-20 py-8">
+                <p class="text-gray-500 dark:text-dark-gray-500 text-sm text-center">
+                    &copy; 2025 Tushar Verma. All rights reserved.
+                </p>
+            </footer>
+
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- Mobile Menu Toggle ---
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuIconClosed = document.getElementById('menu-icon-closed');
+            const menuIconOpen = document.getElementById('menu-icon-open');
+
+            mobileMenuButton.addEventListener('click', () => {
+                const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+                mobileMenuButton.setAttribute('aria-expanded', !isExpanded);
+                mobileMenu.classList.toggle('hidden');
+                menuIconClosed.classList.toggle('hidden');
+                menuIconOpen.classList.toggle('hidden');
+            });
+            
+            // Close mobile menu when a link is clicked
+            mobileMenu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (link.getAttribute('href').startsWith('#')) {
+                        mobileMenuButton.setAttribute('aria-expanded', 'false');
+                        mobileMenu.classList.add('hidden');
+                        menuIconClosed.classList.remove('hidden');
+                        menuIconOpen.classList.add('hidden');
+                    }
+                });
+            });
+
+            // --- Active Nav Link on Scroll (Scroll Spy) ---
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.getAttribute('id');
+                        // ** UPDATED: Handle the 'about' section as the first item **
+                        if (id === 'about' && entry.boundingClientRect.top < window.innerHeight / 2) {
+                            navLinks.forEach(link => {
+                                link.classList.toggle('active', link.getAttribute('data-section') === 'about');
+                            });
+                        } else if (id !== 'home' && id !== 'about') { // Handle other sections
+                            navLinks.forEach(link => {
+                                link.classList.toggle('active', link.getAttribute('data-section') === id);
+                            });
+                        }
+                    }
+                });
+            }, { 
+                rootMargin: '-40% 0px -60% 0px',
+                threshold: 0 
+            });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+            
+            // ** UPDATED: Set initial active link for 'about' or check scroll position **
+            // This is a bit more robust:
+            setTimeout(() => {
+                if (window.scrollY < 200) { // If at the top
+                     document.querySelector('.nav-link[data-section="about"]').classList.add('active');
+                }
+            }, 100);
+            
+            // ** UPDATED: Removed the line that activated 'home' **
+
+
+            // --- ** NEW: Theme Toggle Logic ** ---
+            const themeToggleButtons = document.querySelectorAll('.theme-toggle-button');
+            const sunIcons = document.querySelectorAll('.theme-icon-sun');
+            const moonIcons = document.querySelectorAll('.theme-icon-moon');
+
+            // Function to update icon visibility
+            const updateIcons = (isDarkMode) => {
+                sunIcons.forEach(icon => icon.classList.toggle('hidden', !isDarkMode));
+                moonIcons.forEach(icon => icon.classList.toggle('hidden', isDarkMode));
+            };
+
+            // Apply initial icon state on page load
+            updateIcons(document.documentElement.classList.contains('dark'));
+
+            // Add click listener to all toggle buttons
+            themeToggleButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const isDarkMode = document.documentElement.classList.toggle('dark');
+                    localStorage.theme = isDarkMode ? 'dark' : 'light';
+                    updateIcons(isDarkMode);
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
