@@ -153,12 +153,12 @@
 
     <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 md:gap-x-8 lg:gap-x-12 px-4 sm:px-6 lg:px-8">
         
-        <aside class="md:col-span-5 lg:col-span-4 md:sticky md:top-0 md:h-screen md:py-16 md:flex md:flex-col">
+        <aside class="md:col-span-5 lg:col-span-4 md:sticky md:top-0 md:h-screen md:py-16 md:flex md:flex-col md:overflow-y-auto">
             <div class="flex-grow flex flex-col">
                 
                 <div class="hidden md:flex justify-start mb-6">
-                    <img class="w-32 h-32 rounded-full object-cover border-8 border-white dark:border-dark-gray-800 shadow-xl shadow-primary-500/10 dark:shadow-dark-primary-500/10" 
-                         src="profile pic.jpg" 
+                    <img class="w-48 h-48 rounded-full object-cover border-8 border-white dark:border-dark-gray-800 shadow-xl shadow-primary-500/10 dark:shadow-dark-primary-500/10" 
+                         src="profile pic.png" 
                          alt="A photo of Tushar Verma">
                 </div>
 
@@ -170,9 +170,17 @@
                     AI & Software Developer
                 </h2>
                 
-                <p class="hidden md:block text-gray-600 dark:text-dark-gray-400 mt-4 max-w-xs">
-                    Aspiring AI & ML Engineer specializing in data analysis, computer vision, and building intelligent applications.
-                </p>
+                <div class="hidden md:block text-gray-600 dark:text-dark-gray-400 mt-4 max-w-xs space-y-3">
+                    <p>
+                        An aspiring AI/ML engineer who turns data into insights and ideas into applications.
+                    </p>
+                    <p>
+                        I build end-to-end projects: from <strong class="text-gray-700 dark:text-dark-gray-200">Power BI</strong> dashboards to computer vision models with <strong class="text-gray-700 dark:text-dark-gray-200">OpenCV</strong> and user-facing apps with <strong class="text-gray-700 dark:text-dark-gray-200">Python/NLP</strong>. My internship experience has solidified my skills in a professional setting.
+                    </p>
+                    <p>
+                        I'm a problem-solver at heart. Let's build something impactful together.
+                    </p>
+                </div>
 
                 <nav class="hidden md:block mt-12">
                     <ul class="space-y-2">
@@ -226,15 +234,46 @@
             <section id="home" class="py-16 md:py-0 md:pt-0">
                 <div class="flex justify-center md:hidden">
                     <img class="w-48 h-48 rounded-full object-cover border-8 border-white dark:border-dark-gray-800 shadow-xl shadow-primary-500/10 dark:shadow-dark-primary-500/10" 
-                         src="profile pic.jpg" 
+                         src="profile pic.png" 
                          alt="A photo of Tushar Verma">
                 </div>
-            </section>
+
+                <div class="hidden md:flex flex-col justify-center min-h-[50vh]">
+                    <h1 class="text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white leading-tight">
+                        Hi, I'm <span class="gradient-text">Tushar Verma</span>
+                    </h1>
+                    <h2 class="mt-4 text-3xl lg:text-4xl font-medium text-primary-600 dark:text-dark-primary-400">
+                        AI & Software Developer
+                    </h2>
+                    <p class="mt-6 text-xl text-gray-600 dark:text-dark-gray-400 max-w-2xl">
+                        I'm an aspiring AI/ML engineer who turns data into insights and ideas into applications. I build end-to-end projects, from Power BI dashboards and computer vision models to user-facing NLP apps.
+                    </p>
+                </div>
+                </section>
 
             <section id="about" class="py-20 md:py-32">
-                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-8">
                     <span class="gradient-text">About Me</span>
                 </h2>
+
+                <div class="space-y-4 text-lg text-gray-600 dark:text-dark-gray-400 mb-16">
+                    <p>
+                        Hello, I'm Tushar Verma, a Computer Science student at IMS Engineering College with a specialization in Artificial Intelligence and Machine Learning. I'm passionate about building practical, intelligent applications that solve tangible problems.
+                    </p>
+                    <p>
+                        My work spans several domains. I build interactive tools for <strong class="text-gray-800 dark:text-dark-gray-100">data-driven decision-making</strong>, like my sales and insurance dashboards using <strong class="text-gray-800 dark:text-dark-gray-100">Power BI</strong>. I also develop <strong class="text-gray-800 dark:text-dark-gray-100">accessibility-focused applications</strong> using computer vision; my Sign Language Recognition system, for example, uses <strong class="text-gray-800 dark:text-dark-gray-100">OpenCV</strong> and <strong class="text-gray-800 dark:text-dark-gray-100">MediaPipe</strong> to translate gestures into text in real-time.
+                    </p>
+                    <p>
+                        In the realm of <strong class="text-gray-800 dark:text-dark-gray-100">Natural Language Processing (NLP)</strong>, I've built everything from a Twitter Hate Speech Detector to a content-based Music Recommender System with <strong class="text-gray-800 dark:text-dark-gray-100">Streamlit</strong>. I also enjoy creating user-centric tools like 'FRIDAY,' a desktop voice assistant I developed with face authentication and task automation features.
+                    </p>
+                    <p>
+                        My technical foundation in Python, scikit-learn, Pandas, and SQL was strengthened by my machine learning and data analyst internships. I am a collaborative problem-solver always eager to tackle new challenges in the AI and software development space.
+                    </p>
+                    <p>
+                        Explore my projects below to see these skills in action, or connect with me on LinkedIn.
+                    </p>
+                </div>
+
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
                     
                     <div class="space-y-12">
@@ -638,17 +677,41 @@
             // --- Active Nav Link on Scroll (Scroll Spy) ---
             const sections = document.querySelectorAll('section[id]');
             const navLinks = document.querySelectorAll('.nav-link');
+            
+            // ** NEW: Observe 'home' section separately **
+            const homeSection = document.getElementById('home');
+            
+            const homeObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
+                         navLinks.forEach(link => {
+                            // Deactivate all links
+                            link.classList.remove('active');
+                         });
+                         // Activate the 'About' link when 'home' is in view
+                         document.querySelector('.nav-link[data-section="about"]').classList.add('active');
+                    }
+                });
+            }, { threshold: 0.5 }); // Triggers when 50% of the home section is visible
 
-            const observer = new IntersectionObserver((entries) => {
+            if (homeSection) {
+                homeObserver.observe(homeSection);
+            }
+
+            const sectionObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         const id = entry.target.getAttribute('id');
-                        // ** UPDATED: Handle the 'about' section as the first item **
+                        
+                        // Don't do anything for 'home' here, it's handled above
+                        if (id === 'home') return; 
+                        
+                        // Check if we're scrolling *up* to the about section
                         if (id === 'about' && entry.boundingClientRect.top < window.innerHeight / 2) {
                             navLinks.forEach(link => {
                                 link.classList.toggle('active', link.getAttribute('data-section') === 'about');
                             });
-                        } else if (id !== 'home' && id !== 'about') { // Handle other sections
+                        } else if (id !== 'about') { // Handle all other sections normally
                             navLinks.forEach(link => {
                                 link.classList.toggle('active', link.getAttribute('data-section') === id);
                             });
@@ -656,25 +719,24 @@
                     }
                 });
             }, { 
-                rootMargin: '-40% 0px -60% 0px',
+                rootMargin: '-40% 0px -60% 0px', // Asymmetric margin for better "center" trigger
                 threshold: 0 
             });
 
             sections.forEach(section => {
-                observer.observe(section);
+                 // Don't observe 'home' with this observer
+                if (section.getAttribute('id') !== 'home') {
+                    sectionObserver.observe(section);
+                }
             });
             
-            // ** UPDATED: Set initial active link for 'about' or check scroll position **
-            // This is a bit more robust:
+            // Set initial active link for 'about' on page load
             setTimeout(() => {
                 if (window.scrollY < 200) { // If at the top
                      document.querySelector('.nav-link[data-section="about"]').classList.add('active');
                 }
             }, 100);
             
-            // ** UPDATED: Removed the line that activated 'home' **
-
-
             // --- ** NEW: Theme Toggle Logic ** ---
             const themeToggleButtons = document.querySelectorAll('.theme-toggle-button');
             const sunIcons = document.querySelectorAll('.theme-icon-sun');
